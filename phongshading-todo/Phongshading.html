@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html style="background-color: rgba(188,190,192,1.0);">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>计算机图形学:明暗着色和纹理贴图</title>
+    <style type="text/css">
+        body{
+            margin: 5px;
+            width: calc(100vw - 10px);
+            height: calc(100vh - 40px);
+        }
+        .controls {
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            z-index: 10;
+        }
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>    
+	<script type="text/javascript" src="./Common/webgl-utils.js"></script>
+	<script type="text/javascript" src="./Common/initShaders2.js"></script>
+	<script type="text/javascript" src="./Common/MVnew.js"></script>
+	<script type="text/javascript" src="./Models.js"></script>
+	<script type="text/javascript" src="./configMaterialParameters.js"></script>
+	<script type="text/javascript" src="./configTexture.js"></script>
+    <script type="text/javascript" src="./Phongshading.js"></script>
+    
+    <script>
+        // 更新凹凸效果状态显示
+        function updateBumpyStatus() {
+            var statusElem = document.getElementById('bumpyStatus');
+            statusElem.textContent = '凹凸效果: ' + (window.useBumpyCube ? '开启' : '关闭');
+        }
+        
+        // 页面加载完成后再执行脚本
+        window.addEventListener('load', function() {
+            // 更新初始状态显示
+            updateBumpyStatus();
+            
+            // 覆盖toggleBumpyEffect函数以更新状态显示
+            if (typeof toggleBumpyEffect === 'function') {
+                var originalToggle = toggleBumpyEffect;
+                window.toggleBumpyEffect = function() {
+                    originalToggle();
+                    updateBumpyStatus();
+                };
+            }
+        });
+    </script>
+</head>
+<body>
+    <div style="display:flex; justify-content:space-between; line-height:30px; color:black; font-size:1vw;">
+		<text>C/V-点光源/平行光源</text>
+		<text>Y/U-拉大/缩小光源距离</text>
+		<text>WS/AD-光源绕X/Y轴旋转</text>
+		<text>I/K/J/L/,/.移动摄像机</text>
+        <text>M/N-投影角zoomin/zoomout</text>
+        <text>空格-重置复位</text>        
+    </div>
+    
+    <!-- 凹凸效果控制按钮 -->
+    <div class="controls">
+        <button id="toggleBumpyBtn" onclick="toggleBumpyEffect()">切换凹凸效果</button>
+        <div class="status" id="bumpyStatus">凹凸效果: 关闭</div>
+    </div>
+    
+	<canvas id="canvas">Oops ... your browser doesn't support the HTML5 canvas element</canvas>
+    <img id = "cubeTexImage" src = "container.png" hidden></img>
+    <img id = "planeTexImage" src = "wood.png" hidden></img>
+</body>
+</html>
