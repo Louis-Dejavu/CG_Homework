@@ -1,0 +1,22 @@
+body { margin: 0; overflow: hidden; background-color: #1a1a1a; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+/* 左上角标题栏 */
+#info {
+    position: absolute; top: 20px; left: 20px;
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    backdrop-filter: blur(10px); /* 核心：毛玻璃模糊 */
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    pointer-events: none;
+    user-select: none;
+}
+
+#info h1 { margin: 0 0 5px 0; font-size: 1.2rem; letter-spacing: 1px; }
+#info p { margin: 0; font-size: 0.9rem; opacity: 0.8; }
+
+/* 右上角 GUI 容器定位调整 */
+.lil-gui.root { top: 20px; right: 20px; }
