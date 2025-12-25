@@ -29,6 +29,23 @@ export const WorldMath = {
         }
     `,
 
+    // 在MathUtils.js中的WorldMath对象中添加这个方法
+    getNormal: (x, z, scale = 1.0, amplitude = 1.0) => {
+    // 使用中心差分法计算梯度
+        const eps = 0.1;
+        const h = WorldMath.getHeight(x, z, scale, amplitude);
+        const hx = WorldMath.getHeight(x + eps, z, scale, amplitude);
+        const hz = WorldMath.getHeight(x, z + eps, scale, amplitude);
+    
+        // 计算梯度
+        const dx = (hx - h) / eps;
+        const dz = (hz - h) / eps;
+    
+        // 法线向量为 (-dx, 1, -dz)，然后归一化
+        const normal = new THREE.Vector3(-dx, 1, -dz).normalize();
+        return normal;
+    },
+
     // 2. JS 函数：CPU 端计算高度 (必须逻辑同步)
     getHeight: (x, z, scale = 1.0, amplitude = 1.0) => {
         let h = 0.0;

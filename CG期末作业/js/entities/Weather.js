@@ -2,8 +2,9 @@ import * as THREE from 'three';
 import { WeatherShader } from '../shaders/WeatherShader.js';
 
 export class Weather {
-    constructor(scene) {
+    constructor(scene, sceneManager) {
         this.scene = scene;
+        this.sceneManager = sceneManager; // 添加对场景管理器的引用
         this.system = null;
         this.params = { speed: 10.0, type: 1 }; // 默认状态
         this.init();
@@ -45,11 +46,19 @@ export class Weather {
         this.params.type = type;
         this.system.material.uniforms.uType.value = type;
         
+        // 根据天气类型更新天空效果
+        if (this.sceneManager && this.sceneManager.setSkyByWeatherType) {
+            this.sceneManager.setSkyByWeatherType(type);
+        }
+        
         if (type === 2) { // 雪
             this.params.speed = 2.0;
             this.system.material.uniforms.uColor.value.set(0xffffff);
         } else if (type === 1) { // 雨
             this.params.speed = 20.0;
+            this.system.material.uniforms.uColor.value.set(0x8899aa);
+        } else if (type === 0) { // 晴朗（添加晴朗天气支持）
+            this.params.speed = 0.0; // 晴朗天气时停止粒子运动
             this.system.material.uniforms.uColor.value.set(0x8899aa);
         }
     }
